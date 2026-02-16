@@ -1,0 +1,48 @@
+======================== VNPT SMS FORWARDER BOT =========================
+Bot này nhằm phục vụ chuyển tiếp tin nhắn sms từ điện thoại tới telegram.
+B1. Chuẩn bị bot
+	Vào telegram: search @BotFather tạo /newbot
+	Tại đây: hệ thống yêu cầu đặt tên bot >>> tôi đặt là vnpt_bot
+	Lúc này sẽ sinh ra token: 8513984038:AAFHQ5M_KvHf8EGU6j0hdFsDfkoHb5xUiyc (Đây là mã chat riêng của bot)
+	Đồng thời bot được tạo thành công. Vào chat lần đầu tiên cùng bot
+	Dùng token trên vào chorme kiểm tra tình trạng active của bot:
+	https://api.telegram.org/bot8513984038:AAFHQ5M_KvHf8EGU6j0hdFsDfkoHb5xUiyc/getUpdates
+	>>> Trình duyệt trả ra json kết quả chat: Trong đó 6002269341 là id hội thoại chat.
+	{"ok":true,"result":[{"update_id":396866026,
+	"message":{"message_id":3,"from":{"id":6002269341,"is_bot":false,"first_name":"Dang","last_name":"Do","username":"dvdo_dgs","language_code":"en"},"chat":{"id":6002269341,"first_name":"Dang","last_name":"Do","username":"dvdo_dgs","type":"private"},"date":1771174716,"text":"alo"}}]}
+	
+	*Tổng kết lại bước 1 Mục tiêu là ta sẽ có được token và id chat để sang bước 2:
+	token: 8513984038:AAFHQ5M_KvHf8EGU6j0hdFsDfkoHb5xUiyc
+	id_chat: 396866026
+
+B2. Tạo app android để forwarder sms tới bot
+    + Tải android studio (bản mới nhất)
+	+ setup sdk min 24 (vì điện thoại thực hành là android 11 api là 30)
+	+ Tạo project (emptyp view activity) language java 
+	+ Viết code và nhúng token, id_chat ở bước 1 vào file config
+	
+	* Tổng kết bước 2 mục tiêu là build thành công app dưới sự hỗ trợ của ai
+	Source code hiện tại nằm ở: 
+	E:\DangDo1198\HocTap\LapTrinh\Android\SMSForwarder
+	Và sau khi sync thành công thì build apk > vào build > generate apk
+	Sau khi gen xong thì vào thư mục locate lấy file chuẩn bị cho bước 3
+	
+B3. Chuyển apk từ máy tính sang điện thoại
+	+ Dùng cáp cắp điện thoại với laptop
+	+ trên điện thoại vào: cài đặt > cài đặt bổ sung > nhà phát triển tùy chọn > bật active usb gỡ lỗi
+	+ Tải sdk platform về lap top để chuẩn bị bộ công cụ adb
+	+ Sau khi tải về và giải nén thì vào thư mục đó, cmd tại đường dẫn platform-tools
+	+ trên cmd gõ: adb devices > kết quả: 
+	List of devices attached
+	6hgybyusa6krfqjr        device >>> thể hiện đã có điện thoại kết nối với máy tính
+	+ sau đó dùng câu lệnh: 
+	adb install E:\DangDo1198\HocTap\LapTrinh\Android\kho-apk\vnpt-sms-forwarder.apk
+	là có thể cài đặt apk vào điện thoại android
+	
+B4. Trải nghiệm app và nâng cấp business nếu cần tính năng mới. 	
+	
+	
+	
+	
+	
+	
