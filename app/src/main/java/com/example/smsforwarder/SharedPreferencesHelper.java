@@ -91,4 +91,24 @@ public class SharedPreferencesHelper {
 
         return false;
     }
+
+    // Telegram Bot Configuration
+    private static final String KEY_TELEGRAM_BOT_TOKEN = "telegram_bot_token";
+    private static final String KEY_TELEGRAM_CHAT_ID = "telegram_chat_id";
+
+    public void saveTelegramBotToken(String token) {
+        prefs.edit().putString(KEY_TELEGRAM_BOT_TOKEN, token).apply();
+    }
+
+    public String getTelegramBotToken() {
+        return prefs.getString(KEY_TELEGRAM_BOT_TOKEN, "");
+    }
+
+    public void saveTelegramChatId(String chatId) {
+        prefs.edit().putString(KEY_TELEGRAM_CHAT_ID, chatId).apply();
+    }
+
+    public String getTelegramChatId() {
+        return prefs.getString(KEY_TELEGRAM_CHAT_ID, "");
+    }
 }

@@ -24,10 +24,17 @@
         android:lineSpacingExtra="4dp" />
 
     <Button
+        android:id="@+id/telegramConfigButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📱 Cấu hình Telegram"
+        android:layout_marginTop="24dp" />
+
+    <Button
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="⚙️ Cài đặt Filter"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

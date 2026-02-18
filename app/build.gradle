@@ -14,10 +14,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        
-        // Telegram bot credentials
-        buildConfigField "String", "TELEGRAM_BOT_TOKEN", "\"8513984038:AAFHQ5M_KvHf8EGU6j0hdFsDfkoHb5xUiyc\""
-        buildConfigField "String", "TELEGRAM_CHAT_ID", "\"6002269341\""
     }
 
     buildTypes {

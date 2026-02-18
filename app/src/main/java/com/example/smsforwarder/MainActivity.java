@@ -20,7 +20,12 @@ public class MainActivity extends AppCompatActivity {
         TextView statusText = findViewById(R.id.statusText);
         statusText.setText("SMS Forwarder đang chạy...\n\nỨng dụng sẽ tự động chuyển tiếp SMS lên Telegram.");
 
-        // Button mở Settings
+        // Button mở Telegram Config
+        findViewById(R.id.telegramConfigButton).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(this, TelegramConfigActivity.class));
+        });
+
+        // Button mở Settings (Filter)
         findViewById(R.id.settingsButton).setOnClickListener(v -> {
             startActivity(new android.content.Intent(this, SettingsActivity.class));
         });

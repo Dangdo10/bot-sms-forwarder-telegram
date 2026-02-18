@@ -33,13 +33,33 @@ public class SmsReceiver extends BroadcastReceiver {
                             String sender = sms.getDisplayOriginatingAddress();
                             String message = sms.getDisplayMessageBody();
 
+                            Log.d(TAG, "=== SMS RECEIVED DEBUG ===");
+                            Log.d(TAG, "Sender: " + sender);
+                            Log.d(TAG, "Message: " + message);
+
                             // Check filter
                             SharedPreferencesHelper prefsHelper = new SharedPreferencesHelper(context);
+                            Log.d(TAG, "Filter enabled: " + prefsHelper.isFilterEnabled());
+                            Log.d(TAG, "Phone numbers in whitelist: " + prefsHelper.getPhoneNumbers());
+
                             if (prefsHelper.isPhoneNumberAllowed(sender)) {
-                                sendToTelegram("From: " + sender + "\n" + message);
-                                Log.d(TAG, "SMS forwarded from: " + sender);
+                                // Get Telegram config
+                                String botToken = prefsHelper.getTelegramBotToken();
+                                String chatId = prefsHelper.getTelegramChatId();
+
+                                Log.d(TAG, "Bot Token (length): " + botToken.length());
+                                Log.d(TAG, "Chat ID: " + chatId);
+
+                                // Validate config
+                                if (botToken.isEmpty() || chatId.isEmpty()) {
+                                    Log.e(TAG, "❌ Telegram config EMPTY! Please configure in Settings.");
+                                } else {
+                                    Log.d(TAG, "✅ Sending to Telegram...");
+                                    sendToTelegram("From: " + sender + "\n" + message, botToken, chatId);
+                                    Log.d(TAG, "SMS forwarded from: " + sender);
+                                }
                             } else {
-                                Log.d(TAG, "SMS blocked (filter) from: " + sender);
+                                Log.d(TAG, "❌ SMS blocked by filter from: " + sender);
                             }
                         }
                     }
@@ -50,10 +70,7 @@ public class SmsReceiver extends BroadcastReceiver {
         }
     }
 
-    private void sendToTelegram(String text) {
-        String botToken = BuildConfig.TELEGRAM_BOT_TOKEN;
-        String chatId = BuildConfig.TELEGRAM_CHAT_ID;
-
+    private void sendToTelegram(String text, String botToken, String chatId) {
         OkHttpClient client = new OkHttpClient();
         String url = "https://api.telegram.org/bot" + botToken + "/sendMessage";
 
@@ -70,15 +87,20 @@ public class SmsReceiver extends BroadcastReceiver {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e(TAG, "Failed to send to Telegram", e);
+                Log.e(TAG, "❌ Failed to send to Telegram");
+                Log.e(TAG, "Exception type: " + e.getClass().getName());
+                Log.e(TAG, "Exception message: " + e.getMessage());
+                e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "Message sent to Telegram successfully");
+                    Log.d(TAG, "✅ Message sent to Telegram successfully");
                 } else {
-                    Log.e(TAG, "Telegram API error: " + response.code());
+                    Log.e(TAG, "❌ Telegram API error: " + response.code());
+                    String responseBody = response.body() != null ? response.body().string() : "No body";
+                    Log.e(TAG, "Response: " + responseBody);
                 }
                 response.close();
             }
